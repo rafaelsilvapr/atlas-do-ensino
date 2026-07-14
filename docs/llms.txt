@@ -1,0 +1,14 @@
+# Atlas do Ensino
+
+Imagens, livros e ideias para compreender a história da sala de aula e do ensino.
+
+## Seções
+- [Explorar o acervo](https://atlas.professorrafael.com.br/explorar/)
+- [Buscar](https://atlas.professorrafael.com.br/buscar/)
+- [Percursos curatoriais](https://atlas.professorrafael.com.br/percursos/)
+- [Sobre e critérios editoriais](https://atlas.professorrafael.com.br/sobre/)
+- [Fontes e direitos](https://atlas.professorrafael.com.br/fontes-e-direitos/)
+
+## Autoria
+Projeto editorial independente criado e curado por Rafael Rodrigues da Silva.
+- [Página do criador](https://professorrafael.com.br/sobre/)
