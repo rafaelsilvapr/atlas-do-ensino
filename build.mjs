@@ -95,7 +95,7 @@ function footer() {
   return `<footer class="site-footer">
     <div><a class="footer-brand" href="/">Atlas do Ensino</a><p>Um projeto editorial independente sobre a história e a pesquisa do ensino.</p></div>
     <div><p><strong>Criação e curadoria</strong></p><p><a href="${SITE.creatorUrl}">${SITE.creator}</a></p></div>
-    <div><p><strong>Navegação</strong></p><p><a href="/sobre/">Sobre e critérios</a><br><a href="/fontes-e-direitos/">Fontes e direitos</a><br><a href="/privacidade/">Privacidade</a><br><button class="privacy-link" type="button" data-open-privacy>Preferências de privacidade</button><br><a href="https://professorrafael.com.br/">Site do criador ↗</a></p></div>
+    <div><p><strong>Navegação</strong></p><p><a href="/sobre/">Sobre e critérios</a><br><a href="/fontes-e-direitos/">Fontes e direitos</a>${ANALYTICS.ga4MeasurementId ? '<br><button class="privacy-link" type="button" data-open-privacy>Preferências de privacidade</button>' : ''}<br><a href="https://professorrafael.com.br/">Site do criador ↗</a></p></div>
   </footer>`;
 }
 
