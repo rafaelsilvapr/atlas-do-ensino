@@ -10,8 +10,8 @@ const SOCIAL_IMAGE = `${SITE.url}/assets/atlas-do-ensino-og.jpg`;
 const ANALYTICS = {
   site: 'atlas-do-ensino',
   language: 'pt-BR',
-  ga4MeasurementId: '',
-  cloudflareToken: ''
+  ga4MeasurementId: 'G-5VV7SXS09D',
+  cloudflareToken: '1cfc6fdea10f42d1bac10b737e669326'
 };
 
 const IMAGE_DIMENSIONS = {
