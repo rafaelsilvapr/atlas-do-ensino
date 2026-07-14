@@ -7,6 +7,12 @@ const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const OUT = path.join(ROOT, 'docs');
 const BUILD_DATE = new Date().toISOString().slice(0, 10);
 const SOCIAL_IMAGE = `${SITE.url}/assets/atlas-do-ensino-og.jpg`;
+const ANALYTICS = {
+  site: 'atlas-do-ensino',
+  language: 'pt-BR',
+  ga4MeasurementId: '',
+  cloudflareToken: ''
+};
 
 const IMAGE_DIMENSIONS = {
   '/assets/images/albert-anker-exame-escolar-1862.webp': [1600, 937],
@@ -89,7 +95,7 @@ function footer() {
   return `<footer class="site-footer">
     <div><a class="footer-brand" href="/">Atlas do Ensino</a><p>Um projeto editorial independente sobre a história e a pesquisa do ensino.</p></div>
     <div><p><strong>Criação e curadoria</strong></p><p><a href="${SITE.creatorUrl}">${SITE.creator}</a></p></div>
-    <div><p><strong>Navegação</strong></p><p><a href="/sobre/">Sobre e critérios</a><br><a href="/fontes-e-direitos/">Fontes e direitos</a><br><a href="https://professorrafael.com.br/">Site do criador ↗</a></p></div>
+    <div><p><strong>Navegação</strong></p><p><a href="/sobre/">Sobre e critérios</a><br><a href="/fontes-e-direitos/">Fontes e direitos</a><br><a href="/privacidade/">Privacidade</a><br><button class="privacy-link" type="button" data-open-privacy>Preferências de privacidade</button><br><a href="https://professorrafael.com.br/">Site do criador ↗</a></p></div>
   </footer>`;
 }
 
@@ -128,6 +134,7 @@ function page({ title, description, pathName, content, schema = '', bodyClass = 
   <meta name="twitter:image:alt" content="${esc(ogImageAlt)}">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/assets/styles.css">
+  <script>window.__SITE_ANALYTICS__=${JSON.stringify(ANALYTICS).replaceAll('<', '\\u003c')};</script>
 ${head ? `  ${head}\n` : ''}${schema ? `  ${schema}\n` : ''}
 </head>
 <body class="${esc(bodyClass)}">
@@ -136,6 +143,7 @@ ${head ? `  ${head}\n` : ''}${schema ? `  ${schema}\n` : ''}
   <main id="conteudo">${content}</main>
   ${footer()}
   <script src="/assets/app.js" defer></script>
+  <script src="/assets/analytics.js" defer></script>
 </body>
 </html>`;
 }
@@ -402,6 +410,16 @@ function rightsPage() {
   });
 }
 
+function privacyPage() {
+  return page({
+    title: 'Política de Privacidade',
+    description: 'Como o Atlas do Ensino trata métricas de acesso e dados fornecidos pelos visitantes.',
+    pathName: '/privacidade/',
+    schema: breadcrumbs([{ name: 'Início', path: '/' }, { name: 'Privacidade', path: '/privacidade/' }]),
+    content: `<section class="page-hero wrap"><p class="eyebrow">Transparência</p><h1>Política de Privacidade</h1><p>Como são tratadas as métricas de acesso e as escolhas de privacidade no Atlas do Ensino.</p></section><article class="prose wrap narrow"><p><strong>Última atualização:</strong> 14 de julho de 2026.</p><h2>Responsável e contato</h2><p>O Atlas do Ensino é criado e curado por Rafael Rodrigues da Silva. Dúvidas e solicitações relativas a dados pessoais podem ser encaminhadas para <a href="mailto:rafaelsilva.pr@gmail.com">rafaelsilva.pr@gmail.com</a>.</p><h2>Métricas agregadas</h2><p>O Atlas pode utilizar o Cloudflare Web Analytics para medir visualizações, páginas mais acessadas, referências de origem, localização aproximada e desempenho técnico. A ferramenta declara não utilizar cookies nem criar perfis individuais persistentes.</p><h2>Google Analytics</h2><p>Com a autorização do visitante, o Atlas pode carregar o Google Analytics 4 para compreender sessões, recorrência aproximada e interações com buscas, filtros, itens, percursos e fontes externas. O Google Analytics não é carregado antes da escolha positiva. A recusa não limita a consulta ao acervo.</p><h2>Cookies, armazenamento e alteração da escolha</h2><p>Quando autorizado, o Google Analytics pode utilizar identificadores no navegador para distinguir sessões e estimar visitantes recorrentes. A escolha de aceitar ou recusar é registrada localmente no dispositivo e pode ser revista pelo botão “Preferências de privacidade” no rodapé.</p><h2>Compartilhamento e transferência</h2><p>Os dados não são vendidos. Eles podem ser processados pelos fornecedores técnicos necessários à hospedagem e às métricas, inclusive em outros países, de acordo com suas respectivas políticas e salvaguardas.</p><h2>Direitos do titular</h2><p>O titular pode solicitar informações sobre o tratamento ou exercer os direitos previstos na legislação aplicável pelo endereço de contato indicado nesta página.</p></article>`
+  });
+}
+
 function notFoundPage() {
   return page({
     title: 'Página não encontrada', description: 'O endereço informado não existe no Atlas do Ensino.', pathName: '/404.html',
@@ -417,10 +435,12 @@ for (const route of routes) write(`percursos/${route.slug}/index.html`, routePag
 for (const item of allItems) write(itemPath(item).slice(1) + 'index.html', itemPage(item));
 write('sobre/index.html', aboutPage());
 write('fontes-e-direitos/index.html', rightsPage());
+write('privacidade/index.html', privacyPage());
 write('404.html', notFoundPage());
 
 copy('src/styles.css');
 copy('src/app.js');
+copy('src/analytics.js');
 copy('assets/atlas-do-ensino-og.jpg');
 fs.mkdirSync(path.join(OUT, 'assets/images'), { recursive: true });
 for (const image of images) {
@@ -448,6 +468,7 @@ write('assets/search-index.json', JSON.stringify(searchIndex));
 write('favicon.svg', `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="8" fill="#17221f"/><path d="M17 48 29 15h7l12 33h-8l-2.5-8H26L23.5 48zm11-15h7.4L31.7 21z" fill="#f0a15b"/></svg>`);
 write('CNAME', 'atlas.professorrafael.com.br\n');
 write('.nojekyll', '');
+write('googled9e0328a59edf1c6.html', 'google-site-verification: googled9e0328a59edf1c6.html\n');
 write('robots.txt', `User-agent: *\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nUser-agent: ChatGPT-User\nAllow: /\n\nSitemap: ${SITE.url}/sitemap.xml\n`);
 
 const llmsSections = [
@@ -509,7 +530,7 @@ const llmsFull = [
 ];
 write('llms-full.txt', `${llmsFull.join('\n')}\n`);
 
-const paths = ['/', '/explorar/', '/buscar/', '/percursos/', '/sobre/', '/fontes-e-direitos/', ...routes.map((route) => `/percursos/${route.slug}/`), ...allItems.map(itemPath)];
+const paths = ['/', '/explorar/', '/buscar/', '/percursos/', '/sobre/', '/fontes-e-direitos/', '/privacidade/', ...routes.map((route) => `/percursos/${route.slug}/`), ...allItems.map(itemPath)];
 const sitemapImages = new Map([
   ['/', images],
   ['/explorar/', images],

@@ -253,6 +253,13 @@ h3 { font-size: clamp(1.35rem, 2.2vw, 2rem); }
 .site-footer a { color: var(--paper); }
 .site-footer p a { display: inline-block; min-height: 24px; line-height: 24px; }
 .footer-brand { font-family: var(--serif); font-size: 2rem; text-decoration: none; }
+.privacy-link { display: inline-block; min-height: 24px; padding: 0; border: 0; color: var(--paper); background: transparent; font: inherit; line-height: 24px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.privacy-banner { position: fixed; z-index: 1000; right: 20px; bottom: 20px; left: 20px; display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: center; max-width: 980px; margin: auto; padding: 22px 24px; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 4px; box-shadow: 0 12px 40px rgba(0,0,0,.35); }
+.privacy-banner p { margin: .35rem 0 0; color: var(--muted); font-size: .9rem; }
+.privacy-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.privacy-actions button { padding: 10px 14px; border: 1px solid var(--accent); border-radius: 2px; font: inherit; font-weight: 700; cursor: pointer; }
+.privacy-reject { color: var(--ink); background: transparent; }
+.privacy-accept { color: var(--ink); background: var(--accent); }
 
 @media (max-width: 1050px) {
   .discovery-intro { grid-template-columns: 1fr; gap: 32px; }
@@ -318,6 +325,8 @@ h3 { font-size: clamp(1.35rem, 2.2vw, 2rem); }
   .object-header h1 { font-size: clamp(3rem, 15vw, 5.3rem); }
   .object-book, .object-concept { min-height: 450px; }
   .site-footer { grid-template-columns: 1fr; gap: 28px; padding: 50px 20px; }
+  .privacy-banner { grid-template-columns: 1fr; gap: 16px; right: 10px; bottom: 10px; left: 10px; }
+  .privacy-actions button { flex: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
