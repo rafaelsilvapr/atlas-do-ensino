@@ -2,7 +2,7 @@ export const SITE = {
   name: 'Atlas do Ensino',
   shortName: 'Atlas',
   url: 'https://atlas.professorrafael.com.br',
-  description: 'Imagens, livros e ideias para compreender a história da sala de aula e do ensino.',
+  description: 'Acervo digital de imagens, livros e conceitos sobre a história do ensino, da sala de aula, da disciplina e dos métodos de ensinar.',
   creator: 'Rafael Rodrigues da Silva',
   creatorUrl: 'https://professorrafael.com.br/sobre/'
 };

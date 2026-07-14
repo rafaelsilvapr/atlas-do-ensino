@@ -6,6 +6,19 @@ import { SITE, images, books, concepts, routes, allItems, itemBySlug } from './d
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const OUT = path.join(ROOT, 'docs');
 const BUILD_DATE = new Date().toISOString().slice(0, 10);
+const SOCIAL_IMAGE = `${SITE.url}/assets/atlas-do-ensino-og.jpg`;
+
+const IMAGE_DIMENSIONS = {
+  '/assets/images/albert-anker-exame-escolar-1862.webp': [1600, 937],
+  '/assets/images/arvore-de-andry-1743.webp': [1200, 1966],
+  '/assets/images/bogdanov-belsky-calculo-mental-1895.webp': [1200, 1631],
+  '/assets/images/edward-lamson-henry-escola-rural-1890.webp': [1400, 991],
+  '/assets/images/escola-montessori-haia-1915.webp': [562, 440],
+  '/assets/images/jan-steen-escola-da-aldeia-1665.webp': [1400, 1924],
+  '/assets/images/jan-steen-mestre-adormecido-1672.webp': [1400, 938],
+  '/assets/images/migliara-ensino-mutuo.webp': [537, 398],
+  '/assets/images/ostade-o-mestre-escola-1644.webp': [1400, 1571]
+};
 
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
@@ -35,6 +48,10 @@ function absolute(url) {
   return url.startsWith('http') ? url : `${SITE.url}${url}`;
 }
 
+function xmlEsc(value = '') {
+  return esc(value).replaceAll("'", '&apos;');
+}
+
 function jsonLd(value) {
   return `<script type="application/ld+json">${JSON.stringify(value).replaceAll('<', '\\u003c')}</script>`;
 }
@@ -54,13 +71,13 @@ function breadcrumbs(items) {
 
 function header() {
   return `<header class="site-header">
-    <a class="brand" href="/" aria-label="Atlas do Ensino — página inicial">
+    <a class="brand" href="/">
       <span class="brand-mark" aria-hidden="true">A</span>
       <span><strong>Atlas do Ensino</strong><small>imagens, livros e ideias</small></span>
     </a>
     <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-nav">Menu</button>
     <nav id="main-nav" class="main-nav" aria-label="Navegação principal">
-      <a href="/explorar/">Explorar</a>
+      <a href="/#acervo">Explorar</a>
       <a href="/buscar/">Buscar</a>
       <a href="/percursos/">Percursos</a>
       <a href="/sobre/">Sobre</a>
@@ -76,7 +93,7 @@ function footer() {
   </footer>`;
 }
 
-function page({ title, description, pathName, content, schema = '', bodyClass = '' }) {
+function page({ title, description, pathName, content, schema = '', bodyClass = '', ogImage = SOCIAL_IMAGE, ogImageAlt = 'Atlas do Ensino — imagens, livros e ideias', ogImageType = 'image/jpeg', ogImageWidth = 1200, ogImageHeight = 630, head = '' }) {
   const canonical = `${SITE.url}${pathName}`;
   const fullTitle = title === SITE.name ? title : `${title} | ${SITE.name}`;
   return `<!doctype html>
@@ -86,7 +103,11 @@ function page({ title, description, pathName, content, schema = '', bodyClass = 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${esc(fullTitle)}</title>
   <meta name="description" content="${esc(description)}">
+  <meta name="author" content="${esc(SITE.creator)}">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <link rel="canonical" href="${canonical}">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="Conteúdo do Atlas para sistemas de IA">
   <meta name="theme-color" content="#17221f">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="pt_BR">
@@ -94,11 +115,20 @@ function page({ title, description, pathName, content, schema = '', bodyClass = 
   <meta property="og:title" content="${esc(fullTitle)}">
   <meta property="og:description" content="${esc(description)}">
   <meta property="og:url" content="${canonical}">
-  <meta property="og:image" content="${SITE.url}/assets/og-atlas.svg">
+  <meta property="og:image" content="${ogImage}">
+  <meta property="og:image:secure_url" content="${ogImage}">
+  <meta property="og:image:type" content="${ogImageType}">
+  <meta property="og:image:width" content="${ogImageWidth}">
+  <meta property="og:image:height" content="${ogImageHeight}">
+  <meta property="og:image:alt" content="${esc(ogImageAlt)}">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${esc(fullTitle)}">
+  <meta name="twitter:description" content="${esc(description)}">
+  <meta name="twitter:image" content="${ogImage}">
+  <meta name="twitter:image:alt" content="${esc(ogImageAlt)}">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/assets/styles.css">
-  ${schema}
+${head ? `  ${head}\n` : ''}${schema ? `  ${schema}\n` : ''}
 </head>
 <body class="${esc(bodyClass)}">
   <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -124,8 +154,9 @@ function topicLinks(topics = []) {
 }
 
 function card(item, options = {}) {
+  const [width, height] = IMAGE_DIMENSIONS[item.image] || [720, 520];
   const imageBlock = item.kind === 'imagem'
-    ? `<div class="card-media"><img src="${item.image}" alt="" loading="lazy" width="720" height="520"></div>`
+    ? `<div class="card-media"><img src="${item.image}" alt="${esc(item.alt)}" loading="lazy" width="${width}" height="${height}"></div>`
     : item.kind === 'livro'
       ? `<div class="book-cover" aria-hidden="true"><span>${esc(item.creator.split(',')[0])}</span><strong>${esc(item.shortTitle || item.title)}</strong><small>${esc(String(item.year))}</small></div>`
       : `<div class="concept-glyph" aria-hidden="true">${esc(item.title.slice(0, 1))}</div>`;
@@ -141,43 +172,99 @@ function card(item, options = {}) {
   </article>`;
 }
 
+function discoveryCard(item, index) {
+  const [width, height] = IMAGE_DIMENSIONS[item.image] || [720, 520];
+  const featured = index === 0 ? ' featured' : '';
+  const priority = index === 0 ? '' : ' loading="lazy"';
+  return `<article class="discovery-card discovery-${index + 1}${featured}">
+    <a href="${itemPath(item)}">
+      <img src="${item.image}" alt="${esc(item.alt)}" width="${width}" height="${height}"${priority}>
+      <span class="discovery-caption"><small>${esc(item.date || item.period)}</small><strong>${esc(item.title)}</strong><em>${esc(item.creator)}</em></span>
+    </a>
+  </article>`;
+}
+
 function homePage() {
-  const featured = [images[4], books[0], images[7], books[11], images[8], concepts[2]];
+  const discoveryImages = [images[6], images[7], images[2], images[0], images[4], images[8], images[1], images[5], images[3]];
   const siteSchema = jsonLd({
     '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: SITE.name,
-    alternateName: 'Atlas do Ensino — imagens, livros e ideias',
-    url: `${SITE.url}/`,
-    inLanguage: 'pt-BR',
-    description: SITE.description,
-    creator: { '@type': 'Person', name: SITE.creator, url: SITE.creatorUrl }
+    '@graph': [
+      {
+        '@type': 'WebSite',
+        '@id': `${SITE.url}/#website`,
+        name: SITE.name,
+        alternateName: ['Atlas', 'Atlas do Ensino — imagens, livros e ideias', 'atlas.professorrafael.com.br'],
+        url: `${SITE.url}/`,
+        inLanguage: 'pt-BR',
+        description: SITE.description,
+        creator: { '@type': 'Person', '@id': `${SITE.creatorUrl}#rafael-rodrigues-da-silva`, name: SITE.creator, url: SITE.creatorUrl },
+        potentialAction: {
+          '@type': 'SearchAction',
+          target: { '@type': 'EntryPoint', urlTemplate: `${SITE.url}/buscar/?q={search_term_string}` },
+          'query-input': 'required name=search_term_string'
+        }
+      },
+      {
+        '@type': 'CollectionPage',
+        '@id': `${SITE.url}/#collection`,
+        url: `${SITE.url}/`,
+        name: 'Atlas do Ensino: história da sala de aula, imagens e livros',
+        description: SITE.description,
+        inLanguage: 'pt-BR',
+        isPartOf: { '@id': `${SITE.url}/#website` },
+        mainEntity: {
+          '@type': 'ItemList',
+          numberOfItems: allItems.length,
+          itemListElement: discoveryImages.map((item, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            url: `${SITE.url}${itemPath(item)}`,
+            name: item.title
+          }))
+        }
+      }
+    ]
   });
   return page({
-    title: SITE.name,
+    title: 'História da sala de aula: imagens, livros e ideias',
     description: SITE.description,
     pathName: '/',
     schema: siteSchema,
     bodyClass: 'home',
-    content: `<section class="hero">
-      <div class="hero-copy"><p class="eyebrow light">Acervo editorial aberto</p><h1>Imagens, livros e ideias para compreender <em>o ensino</em>.</h1><p class="hero-lead">Um atlas em construção sobre a história da sala de aula, os métodos de ensinar e a pesquisa que procura compreendê-los.</p>
-        <form class="hero-search" action="/buscar/" method="get"><label class="sr-only" for="home-search">Buscar no Atlas</label><input id="home-search" name="q" type="search" placeholder="Busque uma obra, pessoa, método ou questão"><button type="submit">Buscar</button></form>
-      </div>
-      <a class="hero-image" href="/imagens/calculo-mental-bogdanov-belsky/"><img src="/assets/images/bogdanov-belsky-calculo-mental-1895.webp" alt="Alunos resolvem um problema de cálculo mental em uma escola russa, em pintura de 1895."><span><strong>Observe a atenção</strong><small>Cálculo mental, 1895</small></span></a>
+    content: `<section class="discovery-hero">
+      <div class="wrap discovery-intro"><div><p class="eyebrow light">Acervo digital aberto</p><h1>Explore as histórias da <em>sala de aula</em>.</h1></div><div class="discovery-intro-copy"><p>Imagens, livros e conceitos para investigar como o ensino ganhou formas, espaços, métodos e problemas ao longo do tempo.</p><form class="hero-search" action="/buscar/" method="get"><label class="sr-only" for="home-search">Buscar no Atlas do Ensino</label><input id="home-search" name="q" type="search" placeholder="Busque uma obra, autor, método ou tema"><button type="submit">Buscar</button></form></div></div>
     </section>
-    <section class="entry-choices wrap"><a href="/explorar/"><span>01</span><strong>Explorar o acervo</strong><small>Navegue por imagens, livros, períodos e temas.</small></a><a href="/buscar/"><span>02</span><strong>Buscar diretamente</strong><small>Encontre autores, obras, conceitos e questões.</small></a><a href="/percursos/"><span>03</span><strong>Seguir um percurso</strong><small>Conecte objetos por uma narrativa histórica.</small></a></section>
-    <section class="wrap section"><div class="section-heading"><div><p class="eyebrow">Em destaque</p><h2>Uma coleção feita de relações</h2></div><p>O Atlas aproxima materiais de naturezas diferentes. Cada item abre caminhos para outros tempos, conceitos e problemas.</p></div><div class="card-grid featured-grid">${featured.map((item) => card(item)).join('')}</div><p class="center-action"><a class="button" href="/explorar/">Ver todo o acervo</a></p></section>
+    <section id="acervo" class="discovery-stage" aria-labelledby="acervo-titulo">
+      <div class="wrap discovery-toolbar"><div><p class="eyebrow">Coleção visual</p><h2 id="acervo-titulo">Salas de aula em imagens</h2></div><nav aria-label="Entradas do acervo"><a class="active" href="#acervo">Imagens <span>${images.length}</span></a><a href="/explorar/#livros">Livros <span>${books.length}</span></a><a href="/explorar/#conceitos">Conceitos <span>${concepts.length}</span></a><a href="/percursos/">Percursos <span>${routes.length}</span></a></nav></div>
+      <div class="discovery-grid">${discoveryImages.map(discoveryCard).join('')}</div>
+      <div class="wrap discovery-after"><p>Estas imagens não são decoração: cada uma tem autoria, procedência, situação de direitos e um comentário curatorial sobre o problema de ensino que permite observar.</p><a class="button" href="/explorar/">Explorar imagens, livros e conceitos</a></div>
+    </section>
+    <section class="collection-doors wrap section"><div class="section-heading"><div><p class="eyebrow">Outras entradas</p><h2>Continue por aquilo que desperta sua curiosidade.</h2></div><p>O mesmo acervo pode ser atravessado por obras, conceitos ou narrativas curatoriais.</p></div><div class="door-grid"><a href="/explorar/#livros"><span>${books.length}</span><strong>Livros e documentos</strong><small>Fontes históricas para ler e consultar.</small></a><a href="/explorar/#conceitos"><span>${concepts.length}</span><strong>Conceitos</strong><small>Um vocabulário para orientar a investigação.</small></a><a href="/percursos/"><span>${routes.length}</span><strong>Percursos</strong><small>Histórias que conectam diferentes objetos.</small></a></div></section>
     <section class="dark-band"><div class="wrap"><div class="section-heading inverse"><div><p class="eyebrow light">Percursos</p><h2>Histórias que atravessam o acervo</h2></div><p>Não há uma única linha evolutiva do ensino. Os percursos reúnem objetos para formular problemas e comparar soluções.</p></div><div class="route-grid">${routes.map((route, i) => `<a class="route-card" href="/percursos/${route.slug}/"><span>0${i + 1}</span><p>${esc(route.kicker)}</p><h3>${esc(route.title)}</h3><small>${esc(route.excerpt)}</small></a>`).join('')}</div></div></section>
     <section class="manifesto wrap section"><p class="eyebrow">Princípio editorial</p><blockquote>O ensino não é uma coleção de dicas. É uma prática, uma história e um campo de investigação.</blockquote><p>O Atlas reúne fontes primárias, imagens, livros e verbetes para tornar esse campo mais visível — com indicação de autoria, origem, direitos e limites de cada material.</p><a href="/sobre/">Conheça o projeto e seus critérios →</a></section>`
   });
 }
 
 function explorePage() {
+  const exploreSchema = jsonLd({
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Explorar o acervo do Atlas do Ensino',
+    url: `${SITE.url}/explorar/`,
+    description: 'Imagens, livros e conceitos sobre a história do ensino e da sala de aula.',
+    inLanguage: 'pt-BR',
+    isPartOf: { '@type': 'WebSite', '@id': `${SITE.url}/#website` },
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: allItems.length,
+      itemListElement: allItems.map((item, index) => ({ '@type': 'ListItem', position: index + 1, url: `${SITE.url}${itemPath(item)}`, name: item.title }))
+    }
+  });
   return page({
     title: 'Explorar o acervo',
     description: 'Explore imagens, livros e conceitos do Atlas do Ensino por tipo, período e tema.',
     pathName: '/explorar/',
-    schema: breadcrumbs([{ name: 'Início', path: '/' }, { name: 'Explorar', path: '/explorar/' }]),
+    schema: `${exploreSchema}${breadcrumbs([{ name: 'Início', path: '/' }, { name: 'Explorar', path: '/explorar/' }])}`,
     content: `<section class="page-hero wrap"><p class="eyebrow">Acervo</p><h1>Explore o ensino por diferentes entradas.</h1><p>Uma mesma obra pode participar de várias histórias. Comece por um tipo de material ou use a busca para cruzar períodos, autores e temas.</p></section>
     <section class="facet-strip wrap"><a href="#imagens"><strong>${images.length}</strong><span>imagens</span></a><a href="#livros"><strong>${books.length}</strong><span>livros</span></a><a href="#conceitos"><strong>${concepts.length}</strong><span>conceitos</span></a><a href="/percursos/"><strong>${routes.length}</strong><span>percursos</span></a></section>
     <section id="imagens" class="wrap section"><div class="section-heading"><div><p class="eyebrow">Coleção visual</p><h2>Imagens</h2></div><p>Pinturas, gravuras e fotografias com fonte e situação de uso registradas.</p></div><div class="card-grid image-grid">${images.map((item) => card(item)).join('')}</div></section>
@@ -241,17 +328,48 @@ function itemPage(item) {
     item.rights && ['Direitos', item.rights]
   ].filter(Boolean);
   const schemaType = item.kind === 'imagem' ? 'VisualArtwork' : item.kind === 'livro' ? 'Book' : 'DefinedTerm';
+  const [imageWidth, imageHeight] = IMAGE_DIMENSIONS[item.image] || [1200, 630];
   const itemSchema = jsonLd({
     '@context': 'https://schema.org',
-    '@type': schemaType,
-    name: item.title,
-    description: item.excerpt,
-    url: `${SITE.url}${itemPath(item)}`,
-    inLanguage: item.language || 'pt-BR',
-    ...(item.creator ? { creator: { '@type': 'Person', name: item.creator } } : {}),
-    ...(item.year ? { dateCreated: String(item.year) } : {}),
-    ...(item.kind === 'imagem' ? { image: absolute(item.image), license: item.licenseUrl, creditText: item.rights } : {}),
-    ...(item.sourceUrl ? { sameAs: item.sourceUrl } : {})
+    '@graph': [
+      {
+        '@type': 'WebPage',
+        '@id': `${SITE.url}${itemPath(item)}#webpage`,
+        url: `${SITE.url}${itemPath(item)}`,
+        name: item.title,
+        description: item.excerpt,
+        inLanguage: 'pt-BR',
+        isPartOf: { '@id': `${SITE.url}/#website` },
+        mainEntity: { '@id': `${SITE.url}${itemPath(item)}#item` },
+        ...(item.kind === 'imagem' ? { primaryImageOfPage: { '@id': `${SITE.url}${itemPath(item)}#image` } } : {})
+      },
+      {
+        '@type': schemaType,
+        '@id': `${SITE.url}${itemPath(item)}#item`,
+        name: item.title,
+        description: item.excerpt,
+        url: `${SITE.url}${itemPath(item)}`,
+        inLanguage: item.language || 'pt-BR',
+        ...(item.creator ? { creator: { '@type': 'Person', name: item.creator } } : {}),
+        ...(item.year ? { dateCreated: String(item.year) } : {}),
+        ...(item.kind === 'imagem' ? { image: { '@id': `${SITE.url}${itemPath(item)}#image` } } : {}),
+        ...(item.sourceUrl ? { sameAs: item.sourceUrl } : {})
+      },
+      ...(item.kind === 'imagem' ? [{
+        '@type': 'ImageObject',
+        '@id': `${SITE.url}${itemPath(item)}#image`,
+        contentUrl: absolute(item.image),
+        url: absolute(item.image),
+        caption: `${item.title}. ${item.creator}${item.date ? `, ${item.date}` : ''}.`,
+        description: item.alt,
+        representativeOfPage: true,
+        creator: { '@type': 'Person', name: item.creator },
+        creditText: `${item.creator}. ${item.institution || ''}`.trim(),
+        copyrightNotice: item.rights,
+        license: item.licenseUrl,
+        acquireLicensePage: `${SITE.url}/fontes-e-direitos/`
+      }] : [])
+    ]
   });
   return page({
     title: item.title,
@@ -259,6 +377,7 @@ function itemPage(item) {
     pathName: itemPath(item),
     schema: `${itemSchema}${breadcrumbs([{ name: 'Início', path: '/' }, { name: baseName, path: basePath }, { name: item.title, path: itemPath(item) }])}`,
     bodyClass: `object-page ${item.kind}-page`,
+    ...(item.kind === 'imagem' ? { ogImage: absolute(item.image), ogImageAlt: item.alt, ogImageType: 'image/webp', ogImageWidth: imageWidth, ogImageHeight: imageHeight } : {}),
     content: `<article><header class="object-header wrap"><div><p class="eyebrow">${kindLabel(item.kind)} · ${esc(item.period || '')}</p><h1>${esc(item.title)}</h1>${item.originalTitle ? `<p class="original-title">${esc(item.originalTitle)}</p>` : ''}<p class="object-deck">${esc(item.excerpt)}</p><div class="tags">${topicLinks(item.topics || [])}</div></div></header><div class="object-layout wrap">${media}<div class="object-details"><section><p class="eyebrow">Por que está no Atlas</p><p class="commentary">${esc(item.commentary)}</p></section>${metadata.length ? `<dl>${metadata.map(([label, value]) => `<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join('')}</dl>` : ''}${item.sourceUrl ? `<p><a class="button" href="${item.sourceUrl}">${esc(item.sourceLabel || 'Ver fonte original')} ↗</a></p>` : ''}${item.licenseUrl && item.licenseUrl !== item.sourceUrl ? `<p class="fine"><a href="${item.licenseUrl}">Consultar licença e condições de uso ↗</a></p>` : ''}</div></div></article>${related.length ? `<section class="related soft-band"><div class="wrap section"><div class="section-heading"><div><p class="eyebrow">Relações</p><h2>Continue a investigação</h2></div></div><div class="card-grid related-grid">${related.map((candidate) => card(candidate)).join('')}</div></div></section>` : ''}`
   });
 }
@@ -302,6 +421,7 @@ write('404.html', notFoundPage());
 
 copy('src/styles.css');
 copy('src/app.js');
+copy('assets/atlas-do-ensino-og.jpg');
 fs.mkdirSync(path.join(OUT, 'assets/images'), { recursive: true });
 for (const image of images) {
   const filename = path.basename(image.image);
@@ -326,13 +446,78 @@ const searchIndex = allItems.map((item) => ({
 write('assets/search-index.json', JSON.stringify(searchIndex));
 
 write('favicon.svg', `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="8" fill="#17221f"/><path d="M17 48 29 15h7l12 33h-8l-2.5-8H26L23.5 48zm11-15h7.4L31.7 21z" fill="#f0a15b"/></svg>`);
-write('assets/og-atlas.svg', `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"><rect width="1200" height="630" fill="#17221f"/><circle cx="1000" cy="110" r="240" fill="#b95736" opacity=".8"/><path d="M0 505c210-95 383-100 570-28s395 55 630-66v219H0z" fill="#e9e2d4"/><text x="90" y="245" fill="#f4efe4" font-family="Georgia,serif" font-size="112">Atlas do Ensino</text><text x="96" y="318" fill="#d6d0c4" font-family="Arial,sans-serif" font-size="34">imagens, livros e ideias</text></svg>`);
 write('CNAME', 'atlas.professorrafael.com.br\n');
 write('.nojekyll', '');
-write('robots.txt', `User-agent: *\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nSitemap: ${SITE.url}/sitemap.xml\n`);
-write('llms.txt', `# Atlas do Ensino\n\n${SITE.description}\n\n## Seções\n- [Explorar o acervo](${SITE.url}/explorar/)\n- [Buscar](${SITE.url}/buscar/)\n- [Percursos curatoriais](${SITE.url}/percursos/)\n- [Sobre e critérios editoriais](${SITE.url}/sobre/)\n- [Fontes e direitos](${SITE.url}/fontes-e-direitos/)\n\n## Autoria\nProjeto editorial independente criado e curado por Rafael Rodrigues da Silva.\n- [Página do criador](${SITE.creatorUrl})\n`);
+write('robots.txt', `User-agent: *\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nUser-agent: ChatGPT-User\nAllow: /\n\nSitemap: ${SITE.url}/sitemap.xml\n`);
+
+const llmsSections = [
+  '# Atlas do Ensino',
+  '',
+  `> ${SITE.description}`,
+  '',
+  'O Atlas do Ensino é um acervo editorial independente sobre a história e a pesquisa do ensino. Reúne imagens, livros, documentos, conceitos e percursos curatoriais com autoria, procedência e situação de direitos identificadas.',
+  '',
+  '## Seções principais',
+  `- [Página inicial e coleção visual](${SITE.url}/): entrada visual para o acervo.`,
+  `- [Explorar todo o acervo](${SITE.url}/explorar/): imagens, livros e conceitos.`,
+  `- [Buscar no Atlas](${SITE.url}/buscar/): busca por obra, autoria, período, método ou tema.`,
+  `- [Percursos curatoriais](${SITE.url}/percursos/): narrativas que conectam objetos do acervo.`,
+  `- [Sobre e critérios editoriais](${SITE.url}/sobre/).`,
+  `- [Fontes e direitos](${SITE.url}/fontes-e-direitos/).`,
+  '',
+  '## Percursos',
+  ...routes.map((route) => `- [${route.title}](${SITE.url}/percursos/${route.slug}/): ${route.excerpt}`),
+  '',
+  '## Imagens',
+  ...images.map((item) => `- [${item.title}](${SITE.url}${itemPath(item)}), ${item.creator}, ${item.date}: ${item.excerpt}`),
+  '',
+  '## Livros e documentos',
+  ...books.map((item) => `- [${item.title}](${SITE.url}${itemPath(item)}), ${item.creator}, ${item.date}: ${item.excerpt}`),
+  '',
+  '## Conceitos',
+  ...concepts.map((item) => `- [${item.title}](${SITE.url}${itemPath(item)}): ${item.excerpt}`),
+  '',
+  '## Autoria',
+  `Projeto criado e curado por [${SITE.creator}](${SITE.creatorUrl}), professor e pesquisador.`,
+  '',
+  `Para textos curatoriais completos, fontes e metadados, consulte [llms-full.txt](${SITE.url}/llms-full.txt).`
+];
+write('llms.txt', `${llmsSections.join('\n')}\n`);
+
+const llmsFull = [
+  '# Atlas do Ensino — conteúdo curatorial completo',
+  '',
+  SITE.description,
+  '',
+  ...allItems.flatMap((item) => [
+    `## ${item.title}`,
+    '',
+    `- Tipo: ${kindLabel(item.kind)}`,
+    item.creator ? `- Autoria: ${item.creator}` : null,
+    item.date ? `- Data: ${item.date}` : null,
+    item.period ? `- Período: ${item.period}` : null,
+    item.topics?.length ? `- Temas: ${item.topics.join(', ')}` : null,
+    `- Página: ${SITE.url}${itemPath(item)}`,
+    item.sourceUrl ? `- Fonte primária ou registro institucional: ${item.sourceUrl}` : null,
+    item.rights ? `- Direitos: ${item.rights}` : null,
+    '',
+    item.excerpt,
+    '',
+    item.commentary,
+    ''
+  ].filter(Boolean))
+];
+write('llms-full.txt', `${llmsFull.join('\n')}\n`);
 
 const paths = ['/', '/explorar/', '/buscar/', '/percursos/', '/sobre/', '/fontes-e-direitos/', ...routes.map((route) => `/percursos/${route.slug}/`), ...allItems.map(itemPath)];
-write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${paths.map((p) => `  <url><loc>${SITE.url}${p}</loc><lastmod>${BUILD_DATE}</lastmod></url>`).join('\n')}\n</urlset>\n`);
+const sitemapImages = new Map([
+  ['/', images],
+  ['/explorar/', images],
+  ...images.map((item) => [itemPath(item), [item]])
+]);
+write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${paths.map((p) => {
+  const imageEntries = (sitemapImages.get(p) || []).map((item) => `<image:image><image:loc>${xmlEsc(absolute(item.image))}</image:loc></image:image>`).join('');
+  return `  <url><loc>${SITE.url}${p}</loc><lastmod>${BUILD_DATE}</lastmod>${imageEntries}</url>`;
+}).join('\n')}\n</urlset>\n`);
 
 console.log(`Atlas construído: ${paths.length} páginas indexáveis, ${allItems.length} itens.`);

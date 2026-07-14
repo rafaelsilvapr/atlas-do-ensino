@@ -1,14 +1,60 @@
 # Atlas do Ensino
 
-Imagens, livros e ideias para compreender a história da sala de aula e do ensino.
+> Acervo digital de imagens, livros e conceitos sobre a história do ensino, da sala de aula, da disciplina e dos métodos de ensinar.
 
-## Seções
-- [Explorar o acervo](https://atlas.professorrafael.com.br/explorar/)
-- [Buscar](https://atlas.professorrafael.com.br/buscar/)
-- [Percursos curatoriais](https://atlas.professorrafael.com.br/percursos/)
-- [Sobre e critérios editoriais](https://atlas.professorrafael.com.br/sobre/)
-- [Fontes e direitos](https://atlas.professorrafael.com.br/fontes-e-direitos/)
+O Atlas do Ensino é um acervo editorial independente sobre a história e a pesquisa do ensino. Reúne imagens, livros, documentos, conceitos e percursos curatoriais com autoria, procedência e situação de direitos identificadas.
+
+## Seções principais
+- [Página inicial e coleção visual](https://atlas.professorrafael.com.br/): entrada visual para o acervo.
+- [Explorar todo o acervo](https://atlas.professorrafael.com.br/explorar/): imagens, livros e conceitos.
+- [Buscar no Atlas](https://atlas.professorrafael.com.br/buscar/): busca por obra, autoria, período, método ou tema.
+- [Percursos curatoriais](https://atlas.professorrafael.com.br/percursos/): narrativas que conectam objetos do acervo.
+- [Sobre e critérios editoriais](https://atlas.professorrafael.com.br/sobre/).
+- [Fontes e direitos](https://atlas.professorrafael.com.br/fontes-e-direitos/).
+
+## Percursos
+- [Como a classe ganhou forma](https://atlas.professorrafael.com.br/percursos/como-a-classe-ganhou-forma/): Do atendimento sucessivo à lição comum: textos e imagens para observar a formação da sala de aula moderna.
+- [Ensinar muitos: o ensino mútuo](https://atlas.professorrafael.com.br/percursos/ensinar-muitos-ensino-mutuo/): Monitores, sinais e grandes grupos na circulação internacional dos sistemas de Bell e Lancaster.
+- [Ordem, atenção e atividade](https://atlas.professorrafael.com.br/percursos/ordem-atencao-e-atividade/): O que imagens de escolas ordenadas e desordenadas revelam — e escondem — sobre o trabalho de ensinar.
+- [Espaços, objetos e autonomia](https://atlas.professorrafael.com.br/percursos/espacos-objetos-e-autonomia/): Como mobiliário, materiais e configurações espaciais participam do ensino.
+
+## Imagens
+- [O mestre-escola](https://atlas.professorrafael.com.br/imagens/o-mestre-escola-adriaen-van-ostade/), Adriaen van Ostade, Provavelmente 1644: Uma cena de ensino anterior à consolidação da sala de aula moderna, com idades, atividades e ritmos pouco uniformes.
+- [A escola da aldeia](https://atlas.professorrafael.com.br/imagens/a-escola-da-aldeia-jan-steen/), Jan Steen, Cerca de 1665: Uma escola movimentada em que aprender, esperar, brincar e ser corrigido parecem acontecer ao mesmo tempo.
+- [Sala de aula tumultuada com mestre adormecido](https://atlas.professorrafael.com.br/imagens/sala-de-aula-tumultuada-jan-steen/), Jan Steen, 1672: O professor dorme enquanto o espaço escolar se converte em uma cena de desordem coletiva.
+- [A árvore de Andry](https://atlas.professorrafael.com.br/imagens/arvore-de-andry-orthopaedia/), Autor da gravura não identificado, 1743: Uma árvore deformada é endireitada por uma estaca: metáfora histórica da correção do corpo infantil.
+- [Aplicação do método Lancaster-Bell de ensino mútuo](https://atlas.professorrafael.com.br/imagens/ensino-mutuo-lancaster-bell-migliara/), Giovanni Migliara, Primeiras décadas do século XIX: A organização monitorial procura tornar possível o ensino de muitos alunos com poucos mestres.
+- [O exame escolar](https://atlas.professorrafael.com.br/imagens/o-exame-escolar-albert-anker/), Albert Anker, 1862: A avaliação aparece como acontecimento público, observado por adultos e organizado pelo professor.
+- [Uma escola rural](https://atlas.professorrafael.com.br/imagens/uma-escola-rural-edward-lamson-henry/), Edward Lamson Henry, 1890: Uma escola de uma única sala reúne alunos, materiais e níveis distintos sob uma organização comum.
+- [Cálculo mental na escola de S. A. Rachinsky](https://atlas.professorrafael.com.br/imagens/calculo-mental-bogdanov-belsky/), Nikolay Bogdanov-Belsky, 1895: Alunos ocupam posições diferentes enquanto enfrentam coletivamente um problema de aritmética mental.
+- [Escola Montessori em Haia](https://atlas.professorrafael.com.br/imagens/escola-montessori-haia-1915/), Fotógrafo não identificado, 1915: Crianças trabalham em um ambiente no qual mobiliário e materiais participam da organização do ensino.
+
+## Livros e documentos
+- [Ratio atque Institutio Studiorum Societatis Iesu](https://atlas.professorrafael.com.br/livros/ratio-studiorum/), Companhia de Jesus, 1599: Conjunto de regras que sistematizou estudos, funções, tempos e procedimentos nos colégios jesuítas.
+- [Didactica Magna](https://atlas.professorrafael.com.br/livros/didactica-magna/), Jan Amos Comenius, 1657: Projeto de uma arte universal de ensinar, ligado à organização sistemática da escola e à ampliação do acesso ao conhecimento.
+- [Conduite des écoles chrétiennes](https://atlas.professorrafael.com.br/livros/conduta-das-escolas-cristas/), João Batista de La Salle e os Irmãos das Escolas Cristãs, 1720: Manual coletivo sobre tempos, sinais, movimentos, correções e procedimentos da escola elementar lassalista.
+- [Orthopaedia](https://atlas.professorrafael.com.br/livros/orthopaedia/), Nicolas Andry de Boisregard, 1743, tradução inglesa: Tratado médico sobre prevenção e correção de deformidades infantis que legou uma poderosa metáfora educacional.
+- [An Experiment in Education, Made at the Male Asylum of Madras](https://atlas.professorrafael.com.br/livros/experiment-in-education-madras/), Andrew Bell, 1797: Relato do sistema de monitores associado a Andrew Bell e à experiência educacional de Madras.
+- [Practical Education](https://atlas.professorrafael.com.br/livros/practical-education/), Maria Edgeworth e Richard Lovell Edgeworth, 1798: Obra extensa sobre educação prática, hábitos, linguagem, raciocínio e formação moral.
+- [How Gertrude Teaches Her Children](https://atlas.professorrafael.com.br/livros/como-gertrudes-ensina-seus-filhos/), Johann Heinrich Pestalozzi, 1801; tradução inglesa de 1898: Cartas em que Pestalozzi procura explicar princípios e procedimentos de seu método de educação elementar.
+- [Improvements in Education](https://atlas.professorrafael.com.br/livros/improvements-in-education/), Joseph Lancaster, 1803; edição de 1805: Descrição do sistema lancasteriano para organizar o ensino de grandes grupos de crianças.
+- [The Method of the Recitation](https://atlas.professorrafael.com.br/livros/metodo-da-recitacao/), Charles A. McMurry e Frank M. McMurry, 1898: Manual sobre preparação, perguntas, desenvolvimento de ideias e condução da recitação em classe.
+- [Talks to Teachers on Psychology](https://atlas.professorrafael.com.br/livros/talks-to-teachers/), William James, 1899: Conferências que aproximam conceitos psicológicos do trabalho cotidiano dos professores.
+- [The School and Society](https://atlas.professorrafael.com.br/livros/a-escola-e-a-sociedade/), John Dewey, 1900: Conferências sobre as relações entre escola, transformações sociais, ocupações e experiência infantil.
+- [Classroom Management: Its Principles and Technique](https://atlas.professorrafael.com.br/livros/classroom-management-bagley/), William Chandler Bagley, 1907: Um dos primeiros livros a usar “classroom management” no título e tratá-lo como campo sistemático de formação docente.
+- [The Montessori Method](https://atlas.professorrafael.com.br/livros/metodo-montessori/), Maria Montessori, 1912, edição inglesa: Apresentação do método, dos materiais e da organização das Casas das Crianças para o público de língua inglesa.
+- [Democracy and Education](https://atlas.professorrafael.com.br/livros/democracia-e-educacao/), John Dewey, 1916: Investigação filosófica sobre educação, experiência, comunicação, participação e vida democrática.
+
+## Conceitos
+- [Ensino individual](https://atlas.professorrafael.com.br/conceitos/ensino-individual/): Forma de organização em que o mestre atende alunos sucessivamente, enquanto os demais realizam outras tarefas ou aguardam.
+- [Ensino simultâneo](https://atlas.professorrafael.com.br/conceitos/ensino-simultaneo/): Organização em que um professor dirige a mesma lição a um conjunto de alunos agrupados por nível ou etapa.
+- [Ensino mútuo ou monitorial](https://atlas.professorrafael.com.br/conceitos/ensino-mutuo-monitorial/): Sistema no qual alunos monitores conduzem grupos sob coordenação de um mestre, permitindo reunir turmas muito numerosas.
+- [Didática](https://atlas.professorrafael.com.br/conceitos/didatica/): Campo dedicado aos problemas, formas e condições do ensino.
+- [Gestão de sala de aula](https://atlas.professorrafael.com.br/conceitos/gestao-de-sala-de-aula/): Campo que estuda e orienta a criação de condições para ensinar, aprender e conviver em uma classe.
+- [Saberes docentes](https://atlas.professorrafael.com.br/conceitos/saberes-docentes/): Conhecimentos, capacidades e julgamentos mobilizados por professores para interpretar situações e conduzir o ensino.
+- [Ensino baseado em evidências](https://atlas.professorrafael.com.br/conceitos/ensino-baseado-em-evidencias/): Uso crítico de resultados de pesquisa em diálogo com experiência profissional, contexto e objetivos educacionais.
 
 ## Autoria
-Projeto editorial independente criado e curado por Rafael Rodrigues da Silva.
-- [Página do criador](https://professorrafael.com.br/sobre/)
+Projeto criado e curado por [Rafael Rodrigues da Silva](https://professorrafael.com.br/sobre/), professor e pesquisador.
+
+Para textos curatoriais completos, fontes e metadados, consulte [llms-full.txt](https://atlas.professorrafael.com.br/llms-full.txt).
